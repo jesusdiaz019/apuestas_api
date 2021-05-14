@@ -31,7 +31,6 @@ router.get('/save', cors(), async (req, res) => {
             if (api_res.error){
                 res.json(api_res.error);
             }else{
-                var data_res=[];
                 var data_length = api_res.body.response.length;
                 for (i=0;i<data_length;i++){
                     registrarLista(api_res.body.response[i]);
@@ -51,9 +50,8 @@ router.get('/list', cors(), async (req, res) => {
     try {
         
         let pool = await sql.connect(config);
-        let result = await pool.request();
-        result.execute();
-        res.json(data.response);   
+        let result = await pool.request().execute('ListarLiga');
+        res.json(result.recordsets[0]);   
         
     } catch (error) {
         console.log(error);
@@ -75,9 +73,6 @@ async function registrarLista(data){
             .input('FechaFin', sql.Date, data.seasons[0].end)
             .input('Estado', sql.Bit, data.seasons[0].current)
             .execute('GuardarLiga');
-            if(result.recordsets[0]!=null || result.recordsets[0]!='undefined' || result.recordsets[0]!=0 || result.recordsets[0]!='[]'){
-                return result.recordsets;
-            }
     } catch (error) {
         console.log(error);
     }
