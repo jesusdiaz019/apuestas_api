@@ -65,7 +65,7 @@ router.get('/list', cors(), async (req, res) => {
     try {
         
         let pool = await sql.connect(config);
-        let result = await pool.request().execute('ListarLiga');
+        let result = await pool.request().execute('ListarPaisLiga');
         res.json(result.recordsets[0]);   
         
     } catch (error) {
