@@ -31,21 +31,24 @@ router.get('/save', cors(), async (req, res) => {
             if (api_res.error){
                 res.json(api_res.error);
             }else{
-                var list = [];
+                var list = {};
+                var lista = [];
                 var data = api_res.body.response;
                 var pais = data[0].country.name;
                 for(var i=0; i<data.length ;i++){
-                    list.push({
-                        "_id": data[i].league.id,
-                        "liga": data[i].league.name,
-                        "tipo_liga": data[i].league.type,
-                        "logo": data[i].league.logo,
-                        "pais": data[i].country.name,
-                        "fecha_inicio": data[i].seasons.start,
-                        "fecha_fin": data[i].seasons.end,
-                        "estado": data[i].seasons.current
+                    lista.push({
+                        '_id': data[i].league.id,
+                        'liga': data[i].league.name,
+                        'tipo_liga': data[i].league.type,
+                        'logo': data[i].league.logo,
+                        'pais': data[i].country.name,
+                        'fecha_inicio': data[i].seasons.start,
+                        'fecha_fin': data[i].seasons.end,
+                        'estado': data[i].seasons.current
                     });
                 }
+                list.ligas = lista;
+                
                 (async () => {
                     res.json(await registrarLista(list, pais))
                   })();
